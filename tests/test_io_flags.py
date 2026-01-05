@@ -4,6 +4,12 @@ from tests.base_setup import BaseCLISetup
 
 
 class TestIOFlags(BaseCLISetup):
+    """
+    Class for testing CLI with additional IO args.
+     args:
+        --zip (or -z) - Create a zip file containing files under path (respects .gitignore)
+        --output (or -o) - Save tree structure to file
+    """
     # Note: There is no test for copy-to-clipboard currently
     # because real clipboard access is often unavailable/flaky in CI environments.
 

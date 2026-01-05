@@ -2,7 +2,12 @@ from tests.base_setup import BaseCLISetup
 
 
 class TestBasic(BaseCLISetup):
-
+    """
+    Class for testing CLI with additional basic args.
+     args:
+        --version (or -v) - Show this help message and exit
+        --help (or -h) - Display the version of the tool
+    """
     def test_entry_point_runs_and_lists_files(self):
         result = self._run_cli()
 

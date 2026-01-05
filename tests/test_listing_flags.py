@@ -3,7 +3,15 @@ from tests.base_setup import BaseCLISetup
 
 
 class TestListingFlags(BaseCLISetup):
-
+    """
+    Class for testing CLI with additional listing args.
+     -args:
+        --emoji (or -e) - Show emojis in tree output, default is false
+        --no-files - Hide files from the tree (only show directories)
+        --max-depth - Maximum depth to traverse
+        --no-limit - Show all items regardless of count
+        --hidden-items - Show hidden files and directories
+    """
     @staticmethod
     def __build_name_with_emoji(file_name: str, emoji: str):
         return emoji + " " + file_name
