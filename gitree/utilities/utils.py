@@ -1,8 +1,17 @@
-import argparse
-import pathspec
-import random, os, pyperclip, sys
+# gitree/utilities/utils.py
+
+"""
+Utility functions for the tool.
+"""
+
+# Default libs
+import argparse, random, os, sys
 from pathlib import Path
-from typing import List, Optional
+
+# Dependencies
+import pathspec, pyperclip
+
+# Deps from this project
 from ..utilities.logger import Logger
 
 
@@ -22,8 +31,27 @@ def max_items_int(v: str) -> int:
     n = int(v)
     if n < 1 or n > 10000:
         raise argparse.ArgumentTypeError(
-            "--max-items must be >= 1 and <=10000 (or use --no-limit)"
-        )
+            "--max-items must be >= 1 and <=10000 (or use --no-max-items)")
+    return n
+
+
+def max_entries_int(v: str) -> int:
+    """
+    Validate and convert max-entries argument to integer.
+
+    Args:
+        v (str): String value from command line argument
+
+    Returns:
+        int: Validated integer between 1 and 10000
+
+    Raises:
+        argparse.ArgumentTypeError: If value is outside valid range
+    """
+    n = int(v)
+    if n < 1 or n > 10000:
+        raise argparse.ArgumentTypeError(
+            "--max-entries must be >= 1 and <=10000")
     return n
 
 
@@ -39,11 +67,10 @@ def get_unused_file_path(root_path: str) -> str:
             return guessed_path
         elif itr >= 100000:
             raise argparse.ArgumentError(
-                f"could not find unused zip path within {itr} iterations"
-            )
+                f"could not find unused zip path within {itr} iterations")
 
 
-def iter_dir(directory: Path) -> List[Path]:
+def iter_dir(directory: Path) -> list[Path]:
     """
     Safely iterate directory contents handling permission errors.
 
@@ -59,7 +86,7 @@ def iter_dir(directory: Path) -> List[Path]:
         return []
 
 
-def matches_extra(p: Path, root: Path, patterns: List[str], ignore_depth: Optional[int] = None) -> bool:
+def matches_extra(p: Path, root: Path, patterns: list[str], ignore_depth: int | None = None) -> bool:
     """
     Check if path matches any of the extra ignore patterns using gitignore-style matching.
     """
@@ -94,7 +121,7 @@ def matches_extra(p: Path, root: Path, patterns: List[str], ignore_depth: Option
     return False
 
 
-def matches_file_type(p: Path, file_types: List[str]) -> bool:
+def matches_file_type(p: Path, file_types: list[str]) -> bool:
     """
     Check if path matches any of the specified file types (extensions).
 

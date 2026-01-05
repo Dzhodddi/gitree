@@ -1,5 +1,8 @@
-import sys
-from typing import List, Literal, Dict
+# gitree/utilities/logger.py
+
+"""
+Code file for housing Logger and OutputBuffer classes.
+"""
 
 
 class Logger:
@@ -21,13 +24,13 @@ class Logger:
         """
         Initialize the logger with an empty message and outputs list.
         """
-        self._LEVEL_NAMES: Dict[int, str] = {
+        self._LEVEL_NAMES: dict[int, str] = {
             10: "DEBUG",
             20: "INFO",
             30: "WARNING",
             40: "ERROR",
         }
-        self._messages: List[str] = []
+        self._messages: list[str] = []
 
 
     def log(self, level: str | None, message: str) -> None:
@@ -53,7 +56,7 @@ class Logger:
         
         for message in self._messages:
             print(message)
-        self._messages.clear()
+        self.clear()
 
 
     def clear(self) -> None:
@@ -61,6 +64,10 @@ class Logger:
         Clear all stored messages without printing them.
         """
         self._messages.clear()
+
+    
+    def empty(self) -> bool:
+        return len(self._messages) == 0
 
 
     def __len__(self) -> int:
@@ -73,7 +80,7 @@ class Logger:
         return len(self._messages)
     
 
-    def get_logs(self) -> List[str]:
+    def get_logs(self) -> list[str]:
         """
         Get a copy of the stored messages.
 
@@ -97,7 +104,7 @@ class Logger:
         return f"[{self._LEVEL_NAMES[level]}] {message}"
 
 
-class OutputBuffer:
+class OutputBuffer(Logger):
     """
     A custom output buffer to capture stdout writes. A wrapper around Logger.
     """
@@ -105,11 +112,8 @@ class OutputBuffer:
     def __init__(self):
         """
         Initialize the output buffer with a reference to a Logger.
-
-        Args:
-            logger: Logger instance to store output messages
         """
-        self.logger = Logger()
+        super().__init__()
 
 
     def write(self, message: str) -> None:
@@ -119,28 +123,24 @@ class OutputBuffer:
         Args:
             message: The message to write
         """
-        self.logger.log(level=None, message=message)
+        super().log(level=None, message=message)
 
 
-    def flush(self) -> None:
-        """
-        Flush the output buffer.
-        """
-        self.logger.flush()
-
-
-    def get_value(self) -> List[str]:
+    def get_value(self) -> list[str]:
         """
         Get the entire contents of the output buffer as a list of strings.
 
         Returns:
             str: The contents of the output buffer
         """
-        return "\n".join(self.logger.get_logs())
+        return super().get_logs()
     
-    def clear(self) -> None:   
-        """
-        Clear the output buffer.
-        """
-        self.logger.clear()
+
+    def flush(self) -> None:
+        """ A modification for the parent class flush() function """
+        if super().empty():
+            return      # Do not print anything
+
+        for message in self.get_value():
+            print(message)
     

@@ -1,8 +1,13 @@
-PrintStruct.egg-info
-Gitree.egg-info
+# temporary files/cache
+*.egg-info
 __pycache__
-myenv/
-venv/
-.env/
-.vscode/
-.venv/
+
+# environment vars
+myenv
+venv
+.env
+
+# IDE stuff
+.vscode
+.venv
+.idea
